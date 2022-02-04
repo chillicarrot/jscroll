@@ -42,6 +42,7 @@
             _$body = $('body'),
             _$scroll = _isWindow ? _$window : $e,
             _nextHref = $.trim(_$next.prop('href') + ' ' + _options.contentSelector),
+            _namespace = (options.namespace ? '.jscroll-' + options.namespace : '.jscroll'),
 
             // Check if a loading image is defined and preload
             _preloadImage = function() {
@@ -74,7 +75,7 @@
 
             // Remove the jscroll behavior and data from an element
             _destroy = function() {
-                return _$scroll.unbind('.jscroll')
+                return _$scroll.unbind(_namespace)
                     .removeData('jscroll')
                     .find('.jscroll-inner').children().unwrap()
                     .filter('.jscroll-added').children().unwrap();
@@ -126,15 +127,15 @@
                     if (scrollingHeight <= windowHeight) {
                         _observe();
                     }
-                    _$scroll.unbind('.jscroll').bind('scroll.jscroll', function() {
+                    _$scroll.unbind(_namespace).bind('scroll' + _namespace, function() {
                         return _observe();
                     });
                     if (_options.autoTriggerUntil > 0) {
                         _options.autoTriggerUntil--;
                     }
                 } else {
-                    _$scroll.unbind('.jscroll');
-                    $next.bind('click.jscroll', function() {
+                    _$scroll.unbind(_namespace);
+                    $next.bind('click' + _namespace, function() {
                         _nextWrap($next);
                         _load();
                         return false;
